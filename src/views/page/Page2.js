@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-const Fragment = React.Fragment
-
 function Page2(props) {
   useEffect(() => {
-    document.title = 'Page2'
+    document.title = '登录信息'
   })
 
   let { userInfo } = props.loginInfo
 
-  return <Fragment>
+  return <div className="page-wrap">
     <h1>This is Page2</h1>
     <p>{ JSON.stringify(userInfo) }</p>
-  </Fragment>
+  </div>
 }
 
 // lead stores in

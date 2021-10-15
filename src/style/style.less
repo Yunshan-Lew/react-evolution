@@ -1,0 +1,211 @@
+@import '~antd/dist/antd.less';
+
+@primary-color: #bf3726;
+@border-color-gray: #ddd;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+::selection{
+	background: @primary-color;
+	color: #FFF;
+}
+
+::-moz-selection{
+	background: @primary-color;
+	color: #FFF;
+}
+
+.bg-gray{
+	background:#f5f6f9;
+}
+
+.bg-fa{
+	background:#fafafa;
+}
+
+.bg-fff{
+	background:#fff;
+}
+
+.bg-333{
+	background:#333;
+}
+
+.color-000 {
+	color:#000;
+}
+
+.color-4d {
+	color:#4d4d4d;
+}
+
+.color-fff {
+	color:#fff;
+}
+
+.color-gray {
+	color:#999;
+}
+
+.text-center {
+	text-align:center;
+}
+
+.text-right {
+	text-align:right;
+}
+
+.text-left{
+	text-align:left;
+}
+
+.font-12 {
+	font-size:12px!important;
+}
+
+.font-14 {
+	font-size:14px!important;
+}
+
+.font-16 {
+	font-size:16px!important;
+}
+
+.font-18 {
+	font-size:18px!important;
+}
+
+.font-20 {
+	font-size:20px!important;
+}
+
+.font-30 {
+	font-size:30px!important;
+}
+
+.pull-left {
+	float:left;
+}
+
+.pull-right {
+	float:right;
+}
+
+.mart-15 {
+	margin-top:15px;
+}
+
+.marb-15 {
+  margin-bottom:15px;
+}
+
+.marl-15 {
+  margin-left:15px;
+}
+
+.mart-30 {
+	margin-top:30px;
+}
+
+.marb-30 {
+	margin-bottom:30px;
+}
+
+.mart-60 {
+	margin-top:60px;
+}
+
+.marb-60 {
+	margin-bottom:60px;
+}
+
+.border-tp {
+	border-top:1px solid @border-color-gray;
+}
+
+.border-bt {
+	border-bottom:1px solid @border-color-gray;
+}
+
+.rela {
+	position:relative;
+}
+
+.abso {
+	position:absolute;
+}
+
+.pointer {
+	cursor:pointer;
+}
+
+.ellip {
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+/* layout */
+.tx-layout-header {
+  height: 48px;
+  line-height: 48px;
+  padding: 0 20px;
+  position: 'fixed';
+  zIndex: 1;
+  width: '100%';
+}
+
+.tx-layout-container{
+  height: calc(~"100vh - 48px");
+}
+
+.tx-layout-sider, .tx-layout-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.page-wrap {
+  wdith: 100%;
+  padding: 15px
+}
+
+/* login */
+.tx-surface-logo {
+	width: 210px;
+	height: 50px;
+	margin: 0 auto 20px;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.tx-login-layout {
+  height: 100vh;
+  background: url(http://web.cnzhjk.com/image/zh_login_bg.jpg) center/100% 100% no-repeat;
+  align-items: center;
+  padding-right: 300px;
+  flex-direction: row-reverse;
+}
+
+.login-form{
+	width: 360px;
+	background: #fff;
+	padding: 40px;
+	border-radius: 6px;
+}

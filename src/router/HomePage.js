@@ -2,7 +2,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import Home from '@/views/home/Home';
+import CommonLayout from '@/views/layout/CommonLayout';
 import Page1 from '@/views/page/Page1';
 import Page2 from '@/views/page/Page2';
 import PageMain from '@/views/page/PageMain';
@@ -12,14 +12,14 @@ import { prepareAuth } from '@/utils/prepareAuth';
 const HomePage = props => {
   let { selfAuth } = props
 
-  return <Home>
+  return <CommonLayout>
     <Switch>
       { authRender('system:user:index', selfAuth) ? <Route path="/home/page1" component={ Page1 } /> : null }
       { authRender('system:user:add', selfAuth) ? <Route path="/home/page2" component={ Page2 } /> : null }
       <Route path="/home/main" component={ PageMain } />
       <Redirect to={ '/home/main' } />
     </Switch>
-  </Home>
+  </CommonLayout>
 }
 
 // lead stores in

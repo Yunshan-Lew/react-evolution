@@ -12,7 +12,7 @@ import cookies from 'browser-cookies';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
-function Home(props) {
+function CommonLayout(props) {
   const { selfAuth } = props
   const history = useHistory()
   let location = useLocation()
@@ -69,4 +69,4 @@ const mapStateToProps = state => ({
 // lead actions in
 const mapDispatchToProps = dispatch => ({ "actions": bindActionCreators(actions, dispatch) })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(CommonLayout);

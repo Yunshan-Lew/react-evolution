@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 function Page2(props) {
   useEffect(() => {
-    document.title = '登录信息'
+    document.title = '页面2'
   })
 
   let { userInfo } = props.loginInfo

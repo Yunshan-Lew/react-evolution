@@ -1,44 +1,57 @@
 import { useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import { Layout, Menu } from 'antd';
-import { DesktopOutlined } from '@ant-design/icons'
+import { Layout, Menu, Button } from 'antd';
+import { DesktopOutlined } from '@ant-design/icons';
+import { authRender } from '@/utils/authRender';
+import { prepareAuth } from '@/utils/prepareAuth';
+import cookies from 'browser-cookies';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 function Home(props) {
+  const { selfAuth } = props
+  const history = useHistory()
   let location = useLocation()
-  let { Ajax } = props.actions
+
+  useEffect(() => {
+    let logState = cookies.get('tx_logState') === 'true' ? true : false
+    if( !logState ) history.push({ pathname: '/login' })
+  }, [])
 
   let current = useMemo(() => {
     let { pathname } = location
 		return pathname
 	}, [location])
 
-  useEffect(() => {
-    Ajax({
-      url: '/auth/queryAuth',
-      sign: 'self_auth',
-      fail: err => console.error(err)
-    })
-  }, [ Ajax ])
+  const userExit = () => {
+    let { loginOut } = props.actions
+    loginOut()
+    history.push({ pathname: '/login' })
+  }
 
   return (
     <Layout>
-      <Header className="tx-layout-header bg-fff"></Header>
+      <Header className="tx-layout-header bg-fff">
+        <Button className="pull-right" onClick={ userExit }>登出</Button>
+      </Header>
       <Layout className="tx-layout-container">
         <Sider className="tx-layout-sider" width={ 180 } collapsible collapsedWidth={ 60 }>
           <Menu selectedKeys={[current]} defaultOpenKeys={['home']} mode="inline" theme="dark">
             <SubMenu key="home" icon={<DesktopOutlined />} title="落地页">
-              <Menu.Item key="/home/page1">
-                <Link to="/home/page1">主页</Link>
-              </Menu.Item>
-              <Menu.Item key="/home/page2">
-                <Link to="/home/page2">登录信息</Link>
-              </Menu.Item>
+              {
+                authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/page1">
+                  <Link to="/home/page1">页面1</Link>
+                </Menu.Item> : null
+              }
+              {
+                authRender('system:user:add', selfAuth) ? <Menu.Item key="/home/page2">
+                  <Link to="/home/page2">页面2</Link>
+                </Menu.Item> : null
+              }
             </SubMenu>
           </Menu>
         </Sider>
@@ -50,7 +63,7 @@ function Home(props) {
 
 // lead stores in
 const mapStateToProps = state => ({
-	selfAuth: state.detailData['self_auth'] || {}
+	selfAuth: prepareAuth(state.detailData['self_auth'])
 })
 
 // lead actions in

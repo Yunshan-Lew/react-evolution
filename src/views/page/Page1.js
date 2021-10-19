@@ -6,7 +6,7 @@ import actions from '@/store/actions';
 function Page1(props) {
   let { relation } = props
   useEffect(() => {
-    document.title = '主页'
+    document.title = '页面1'
   })
 
   return <div className="page-wrap">

@@ -25,8 +25,24 @@ function Login(props){
 	}
 
   useEffect(() => {
+    document.title = '登陆'
     reloadAccount()
-  })
+    let logState = cookies.get('tx_logState') === 'true' ? true : false
+    if( logState ) history.push({ pathname: '/home/mainPage' })
+  }, [])
+
+  const getAuthInfo = () => {
+    let { Ajax } = props.actions
+    Ajax({
+      url: '/auth/queryAuth',
+      sign: 'self_auth',
+      success: res => {
+        let data = res.data || {}
+        localStorage.setItem('tx_self_auth', JSON.stringify(data), { expires: 7, path: '/' })
+      },
+      fail: err => console.error(err)
+    })
+  }
 
   const loginSubmit = () => {
     form.validateFields()
@@ -49,6 +65,7 @@ function Login(props){
 					message.success('登录成功', 1, () => {
 						history.push({ pathname: '/home/page1' })
 					})
+          getAuthInfo()
         },
         fail: err => {
           setLoading(false)
@@ -70,7 +87,7 @@ function Login(props){
       </Form.Item>
 
       <Form.Item name="password" rules={ rules.password }>
-        <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" />
+        <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" onKeyDown={ e => e.keyCode === 13 ? loginSubmit(e) : null } />
       </Form.Item>
 
       <Form.Item name="remember" valuePropName="checked">

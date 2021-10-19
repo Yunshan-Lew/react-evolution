@@ -20,7 +20,7 @@ function Home(props) {
   useEffect(() => {
     let logState = cookies.get('tx_logState') === 'true' ? true : false
     if( !logState ) history.push({ pathname: '/login' })
-  }, [])
+  })
 
   let current = useMemo(() => {
     let { pathname } = location
@@ -36,7 +36,7 @@ function Home(props) {
   return (
     <Layout>
       <Header className="tx-layout-header bg-fff">
-        <Button className="pull-right" onClick={ userExit }>登出</Button>
+        <Button size="small" className="pull-right" style={{ marginTop: '12px' }}onClick={ userExit }>登出</Button>
       </Header>
       <Layout className="tx-layout-container">
         <Sider className="tx-layout-sider" width={ 180 } collapsible collapsedWidth={ 60 }>

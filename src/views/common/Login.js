@@ -29,7 +29,7 @@ function Login(props){
     reloadAccount()
     let logState = cookies.get('tx_logState') === 'true' ? true : false
     if( logState ) history.push({ pathname: '/home/mainPage' })
-  }, [])
+  })
 
   const getAuthInfo = () => {
     let { Ajax } = props.actions

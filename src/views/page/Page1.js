@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import actions from '@/store/actions';
 
 function Page1(props) {
-  let { relation } = props.detailData
+  let { relation } = props
   useEffect(() => {
     document.title = '主页'
   })
@@ -16,7 +16,7 @@ function Page1(props) {
 
 // lead stores in
 const mapStateToProps = state => ({
-	detailData: state.detailData
+	relation: state.detailData['relation']
 })
 
 // lead actions in

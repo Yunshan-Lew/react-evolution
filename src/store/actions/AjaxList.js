@@ -2,22 +2,22 @@ import fetch from 'isomorphic-fetch';
 import cookies from 'browser-cookies';
 import actions from '@/store/actions';
 import configs from '@/config';
-import toQueryString from '@/utils/toQueryString';
+import { toQueryString } from '@/utils/toQueryString';
+import { handleResponse } from '@/utils/handleResponse';
 
 const SUCCESS = configs.status.success
 
 function AjaxList(param){
 	return function (dispatch, getState) {
-
 		const { url, method, data, contentType, sign, success, fail } = param
 
-		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }url`, {
-			method: method,
-			headers: { "Content-Type": contentType || "application/x-www-form-urlencoded", "Authorization": cookies.get('token') || '' },
-			body: !contentType ? toQueryString({ "pageSize": configs.pageSize, ...data }) : { "pageSize": configs.pageSize, ...data },
+		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }`, {
+			method,
+			headers: { "Content-Type": contentType || "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
+			body: (method || 'GET').toUpperCase() === 'GET' ? null : contentType ? { "pageSize": configs.pageSize, ...data } : toQueryString({ "pageSize": configs.pageSize, ...data }),
 			timeout: 20000
 		})
-		.then(res => res.json())
+		.then(handleResponse)
 		.then(res => {
 			let data = res.data || {}
 			let { count, results } = data
@@ -32,10 +32,9 @@ function AjaxList(param){
 			}
 		})
 		.catch(error => {
-			let response = error.response || {}
-      let status = response.status || null
-      let data = response.data || { message: JSON.stringify(error, Object.getOwnPropertyNames(error), 2) }
-      if ( status && status === 401 ) {
+			let code = error.code || null
+      let data = { message: JSON.stringify(error, Object.getOwnPropertyNames(error), 2) }
+      if ( code && code === 401 ) {
 				dispatch(actions['loginOut']())
 				window.location.href = '/login'
       }

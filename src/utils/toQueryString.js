@@ -10,4 +10,4 @@ const toQueryString = function (obj) {
     }).join('&') : '';
 }
 
-export default toQueryString
+export { toQueryString }

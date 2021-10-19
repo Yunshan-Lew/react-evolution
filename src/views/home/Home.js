@@ -1,5 +1,8 @@
-import { useMemo } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import actions from '@/store/actions';
 import { Layout, Menu } from 'antd';
 import { DesktopOutlined } from '@ant-design/icons'
 
@@ -7,10 +10,21 @@ const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 function Home(props) {
+  let location = useLocation()
+  let { Ajax } = props.actions
+
   let current = useMemo(() => {
-		let { pathname } = props.location
+    let { pathname } = location
 		return pathname
-	}, [props.location])
+	}, [location])
+
+  useEffect(() => {
+    Ajax({
+      url: '/auth/queryAuth',
+      sign: 'self_auth',
+      fail: err => console.error(err)
+    })
+  }, [ Ajax ])
 
   return (
     <Layout>
@@ -34,4 +48,12 @@ function Home(props) {
   );
 }
 
-export default withRouter(Home);
+// lead stores in
+const mapStateToProps = state => ({
+	selfAuth: state.detailData['self_auth'] || {}
+})
+
+// lead actions in
+const mapDispatchToProps = dispatch => ({ "actions": bindActionCreators(actions, dispatch) })
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

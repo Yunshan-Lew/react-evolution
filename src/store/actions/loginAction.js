@@ -2,11 +2,11 @@ import cookies from 'browser-cookies'
 
 const loginIn = (data) => {
 	const { token, user } = data
-	cookies.set('logState', 'true', {
+	cookies.set('tx_logState', 'true', {
 		expires: 7,
 		path: '/'
 	})
-	cookies.set('token', token, {
+	cookies.set('tx_token', token, {
 		expires: 7,
 		path: '/'
 	})
@@ -17,7 +17,7 @@ const loginIn = (data) => {
 }
 
 const loginOut = () => {
-	cookies.set('logState', 'false', {
+	cookies.set('tx_logState', 'false', {
 		expires: 7,
 		path: '/'
 	})

@@ -6,16 +6,13 @@ import CommonLayout from '@/views/layout/CommonLayout';
 import Page1 from '@/views/page/Page1';
 import Page2 from '@/views/page/Page2';
 import PageMain from '@/views/page/PageMain';
-import { authRender } from '@/utils/authRender';
-import { prepareAuth } from '@/utils/prepareAuth';
+import PermissionRouter from '@/components/PermissionRouter'
 
-const HomePage = props => {
-  let { selfAuth } = props
-
+const HomeRouter = props => {
   return <CommonLayout>
     <Switch>
-      { authRender('system:user:index', selfAuth) ? <Route path="/home/page1" component={ Page1 } /> : null }
-      { authRender('system:user:add', selfAuth) ? <Route path="/home/page2" component={ Page2 } /> : null }
+      <PermissionRouter path="/home/page1" authSign="system:user:index" component={ Page1 } />
+      <PermissionRouter path="/home/page2" authSign="system:department:index2" component={ Page2 } />
       <Route path="/home/main" component={ PageMain } />
       <Redirect to={ '/home/main' } />
     </Switch>
@@ -23,11 +20,9 @@ const HomePage = props => {
 }
 
 // lead stores in
-const mapStateToProps = state => ({
-	selfAuth: prepareAuth(state.detailData['self_auth'])
-})
+const mapStateToProps = state => ({})
 
 // lead actions in
 const mapDispatchToProps = dispatch => ({ "actions": bindActionCreators(actions, dispatch) })
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeRouter)

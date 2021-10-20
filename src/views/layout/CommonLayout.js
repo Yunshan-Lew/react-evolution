@@ -6,8 +6,8 @@ import actions from '@/store/actions';
 import { Layout, Menu, Button } from 'antd';
 import { DesktopOutlined } from '@ant-design/icons';
 import { authRender } from '@/utils/authRender';
-import { prepareAuth } from '@/utils/prepareAuth';
 import cookies from 'browser-cookies';
+import { copyAndRename } from '@/utils/deepCopy';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -48,7 +48,7 @@ function CommonLayout(props) {
                 </Menu.Item> : null
               }
               {
-                authRender('system:user:add', selfAuth) ? <Menu.Item key="/home/page2">
+                authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/page2">
                   <Link to="/home/page2">页面2</Link>
                 </Menu.Item> : null
               }
@@ -63,7 +63,7 @@ function CommonLayout(props) {
 
 // lead stores in
 const mapStateToProps = state => ({
-	selfAuth: prepareAuth(state.detailData['self_auth'])
+	selfAuth: copyAndRename(state.detailData['self_auth'])
 })
 
 // lead actions in

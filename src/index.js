@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import routers from '@/router/router';
+import IndexRouter from '@/router/router';
 import configureStore from '@/store/configureStore'
 import { Provider } from 'react-redux';
 import { ConfigProvider, message } from 'antd';
@@ -17,7 +17,7 @@ const store = configureStore();
 ReactDOM.render(
   <Provider store={ store }>
     <ConfigProvider locale={ zhCN }>
-      { routers }
+      <IndexRouter />
     </ConfigProvider>
   </Provider>,
   document.getElementById('root')

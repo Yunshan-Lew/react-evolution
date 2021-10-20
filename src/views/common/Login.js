@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import actions from '@/store/actions';
 import { Layout, Form, Input, Button, Checkbox, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import logoSource from '@/assets/zh_logo.png'
-import cookies from 'browser-cookies'
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import logoSource from '@/assets/zh_logo.png';
+import cookies from 'browser-cookies';
 
 function Login(props){
   const [ form ] = Form.useForm()
@@ -28,21 +28,8 @@ function Login(props){
     document.title = '登陆'
     reloadAccount()
     let logState = cookies.get('tx_logState') === 'true' ? true : false
-    if( logState ) history.push({ pathname: '/home/mainPage' })
+    if( logState ) window.location.href = '/home/main'
   })
-
-  const getAuthInfo = () => {
-    let { Ajax } = props.actions
-    Ajax({
-      url: '/auth/queryAuth',
-      sign: 'self_auth',
-      success: res => {
-        let data = res.data || {}
-        localStorage.setItem('tx_self_auth', JSON.stringify(data), { expires: 7, path: '/' })
-      },
-      fail: err => console.error(err)
-    })
-  }
 
   const loginSubmit = () => {
     form.validateFields()
@@ -63,9 +50,8 @@ function Login(props){
 				 	}
 					// 登录成功
 					message.success('登录成功', 1, () => {
-						history.push({ pathname: '/home/page1' })
+						history.push({ pathname: '/home/main' })
 					})
-          getAuthInfo()
         },
         fail: err => {
           setLoading(false)

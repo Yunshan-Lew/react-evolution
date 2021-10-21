@@ -1,5 +1,5 @@
 const defaultStore = {
-	EMPLOYEE: {
+	system_user: {
 		count: 0,
 		results: []
 	},
@@ -14,10 +14,10 @@ const defaultStore = {
 }
 
 const todos = (state = defaultStore, { type, data }) => {
-	if( type === 'EMPLOYEE' ){
-		const count = Number(data.count || state['EMPLOYEE'].count)
-		const results = data.results || state['EMPLOYEE'].results
-		return { ...state, EMPLOYEE: { count, results } }
+	if( type === 'system_user' ){
+		const count = Number(data.count || state['system_user'].count)
+		const results = data.results || state['system_user'].results
+		return { ...state, system_user: { count, results } }
 	}
 	else if( type === 'TRAIN' ){
 		const count = Number(data.count || state['TRAIN'].count)

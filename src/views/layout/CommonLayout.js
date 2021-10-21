@@ -44,7 +44,7 @@ function CommonLayout(props) {
             <SubMenu key="home" icon={<DesktopOutlined />} title="落地页">
               {
                 authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/page1">
-                  <Link to="/home/page1">页面1</Link>
+                  <Link to="/home/page1">用户管理</Link>
                 </Menu.Item> : null
               }
               {

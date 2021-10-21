@@ -1,7 +1,7 @@
-const configs = {
+const config = {
 	THE_HOST: '/api',
 	defaultParam: {
-		
+
 	},
 	status: {
 		success: [ 0 ],
@@ -11,4 +11,4 @@ const configs = {
 	pageSize: 15
 }
 
-export default configs
+export default config

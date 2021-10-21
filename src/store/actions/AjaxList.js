@@ -11,19 +11,18 @@ function AjaxList(param){
 	return function (dispatch, getState) {
 		const { url, method, data, contentType, sign, success, fail } = param
 
-		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }`, {
+		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }${ (method || 'GET').toUpperCase() === 'GET' ? '?' + toQueryString(data) : '' }`, {
 			method,
 			headers: { "Content-Type": contentType || "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
-			body: (method || 'GET').toUpperCase() === 'GET' ? null : contentType ? { "pageSize": configs.pageSize, ...data } : toQueryString({ "pageSize": configs.pageSize, ...data }),
+			body: (method || 'GET').toUpperCase() === 'GET' ? null : contentType ? data : toQueryString(data),
 			timeout: 20000
 		})
 		.then(handleResponse)
 		.then(res => {
 			let data = res.data || {}
-			let { count, results } = data
 			if( SUCCESS.includes(res.code) ){
 				if( sign ) {
-					dispatch(actions['pushListData'](sign, { "total": count, "list": results }))
+					dispatch(actions['pushListData'](sign, data))
 				}
 				if( typeof success === 'function' ) success(res)
 			}

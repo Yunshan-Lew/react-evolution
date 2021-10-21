@@ -11,7 +11,7 @@ function Ajax(param){
 	return function (dispatch, getState) {
 		const { url, method, data, contentType, sign, timeout, success, fail } = param
 
-		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }`, {
+		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }${ (method || 'GET').toUpperCase() === 'GET' ? '?' + toQueryString(data) : '' }`, {
 			method,
 			headers: { "Content-Type": contentType || "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
 			body: (method || 'GET').toUpperCase() === 'GET' ? null : contentType ? data : toQueryString(data),

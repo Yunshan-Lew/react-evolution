@@ -12,7 +12,7 @@ const HomeRouter = props => {
   return <CommonLayout>
     <Switch>
       <PermissionRouter path="/home/page1" authSign="system:user:index" component={ Page1 } />
-      <PermissionRouter path="/home/page2" authSign="system:department:index2" component={ Page2 } />
+      <PermissionRouter path="/home/page2" authSign="system:department:index" component={ Page2 } />
       <Route path="/home/main" component={ PageMain } />
       <Redirect to={ '/home/main' } />
     </Switch>

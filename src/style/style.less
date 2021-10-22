@@ -3,6 +3,14 @@
 @primary-color: #bf3726;
 @border-color-gray: #ddd;
 
+@colorRed: #FC6C64;
+@colorOrange: #FEC655;
+@colorViolet: #648DF7;
+@colorBlue: #61B8FF;
+@colorGreen: #55BB8A;
+@colorCyan: #0EB0C9;
+@colorBrown: #DC9123;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -165,6 +173,89 @@ code {
   margin-left: 10px;
 }
 
+.btn-brown {
+  color: @colorBrown;
+  border-color: rgba(220, 145, 35, .1);
+  background-color: rgba(220, 145, 35, .1);
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    border-color: #DC9123 !important;
+    background-color: #DC9123 !important;
+  }
+}
+
+.btn-cyan {
+  color: @colorCyan;
+  border-color: rgba(14, 176, 201, .1);
+  background-color: rgba(14, 176, 201, .1);
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    border-color: #0EB0C9 !important;
+    background-color: #0EB0C9 !important;
+  }
+}
+
+.btn-green {
+  color: @colorGreen;
+  border-color: rgba(85, 187, 138, .1);
+  background-color: rgba(85, 187, 138, .1);
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    border-color: #55BB8A !important;
+    background-color: #55BB8A !important;
+  }
+}
+
+.btn-red{
+	color: @colorRed;
+	border-color: rgba(252, 108, 100, .1);
+	background-color: rgba(252, 108, 100, .1);
+
+	&:hover, &:focus, &:active {
+	  color: #fff !important;
+	  border-color: #FC6C64 !important;
+	  background-color: #FC6C64 !important;
+	}
+}
+
+.btn-orange {
+  color: @colorOrange;
+  border-color: rgba(254, 198, 85, .1);
+  background-color: rgba(254, 198, 85, .1);
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    border-color: #FEC655 !important;
+    background-color: #FEC655 !important;
+  }
+}
+
+.btn-violet {
+  color: @colorViolet;
+  border-color: rgba(100, 141, 247, .1);
+  background-color: rgba(100, 141, 247, .1);
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    border-color: #648DF7 !important;
+    background-color: #648DF7 !important;
+  }
+}
+
+.btn-blue {
+	color: @colorBlue;
+	border-color: rgba(97, 184, 255, .1);
+	background-color: rgba(97, 184, 255, .1);
+	&:hover, &:focus, &:active {
+		color:#fff !important;
+		border-color: #61B8FF !important;
+		background-color: #61B8FF !important;
+	}
+}
+
 /* layout */
 .tx-layout-header {
   height: 48px;
@@ -231,8 +322,19 @@ code {
 }
 
 .page-table {
+  height: calc(~"100% - 180px");
   margin-top: 15px;
   padding: 0 0 15px;
-  border:1px solid @border-color-gray;
+  border: 1px solid @border-color-gray;
   background: #fff;
+}
+
+.wait-container {
+  background: #fff;
+  width: calc(~"100% - 30px");
+  height: calc(~"100% - 30px");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
 }

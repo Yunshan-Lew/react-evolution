@@ -1,54 +1,37 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import config from '@/config';
 
-function useQueryTable(defaultQuery = {}, api){
-  const formData = useRef({})
-  const pagination = useRef({
-    pageIndex: defaultQuery.pageIndex || 1,
-    pageSize: defaultQuery.pageSize || config.pageSize
-  })
+function useQueryTable(form, queryFn){
+  let [ pageIndex, setPageIndex ] = useState(1)
+  let [ pageSize, setPageSize ] = useState(config.pageSize)
 
-  const [, forceUpdate] = useState(null)
+  function handleChange(i, s){
+		setPageIndex(i)
+		setPageSize(s)
+		queryFn()
+	}
 
-  const getList = useCallback(function(){
-    if( !api ) return
-    pagination.current.pageIndex = 1
-    api()
-  }, [ api ])
+	function handleSearch(val){
+    setPageIndex(val)
+		queryFn()
+	}
 
-  const setFormItem = useCallback(function(key,value){
-    const form = formData.current
-    form[key] = value
-    forceUpdate({})
-  }, [])
-
-  const reset = useCallback(function(){
-    const current = formData.current
-    for (let key in current) {
-      current[key] = ''
-    }
-    pagination.current.pageIndex = defaultQuery.pageIndex || 1
-    pagination.current.pageSize = defaultQuery.pageSize || config.pageSize
-    console.log(pagination.current)
-    getList()
-  },[ getList ])
-
-  const handleChange = useCallback(function(pageIndex, pageSize){
-    pagination.current = { pageIndex, pageSize }
-    getList()
-  }, [ getList ])
+  function resetTable(){
+    form.resetFields()
+		setPageIndex(1)
+    queryFn()
+	}
 
    /* 组合暴露参数 */
    return [
-    {  /* 组合表格状态 */
-      handleChange,
-      getList,
-      pagination: pagination.current
+    {
+      pageIndex,
+      pageSize
     },
-    {  /* 组合搜索表单状态 */
-      formData: formData.current,
-      setFormItem,
-      reset
+    {
+      handleChange,
+      handleSearch,
+      resetTable
     }
   ]
 }

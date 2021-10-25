@@ -7,6 +7,7 @@ import actions from '@/store/actions';
 import { cleanNullChildren } from '@/utils/cleanNullChildren';
 import { useQueryTable } from '@/hooks/useQueryTable';
 import { useTableHeight } from '@/hooks/useTableHeight';
+import UserConfigModal from '@/views/page/UserConfigModal';
 
 const Fragment = React.Fragment;
 const FormItem = Form.Item;
@@ -15,7 +16,9 @@ const dataSign = 'system_user';
 
 function Page1(props) {
   let [ loading, setLoading ] = useState(false)
-  let [ orgOptions, setOrgOptions ] = useState([])
+  let [ modalV, setModalV ] = useState(false)
+  let [ dataForConfig, setDataConfig ] = useState({})
+  let { deptOptions } = props
   let { Ajax, AjaxList } = props.actions
   const [ form ] = Form.useForm()
   let [ { pageIndex, pageSize }, { handleChange, handleSearch, resetTable } ] = useQueryTable(form, pullData)
@@ -29,19 +32,9 @@ function Page1(props) {
 
   function getOptions(){
 		let optionRequests = [
-			{
-        url: '/basic/department/findDepartmentTree',
-        method: 'post',
-        success: res => {
-          let [ { children } ] = res.data
-				  setOrgOptions(cleanNullChildren(children, 'children'))
-        }
-      },
-			{
-        url: '/basic/systemRole/allExcludeMenu',
-        method: 'get',
-        sign: 'role_options'
-      }
+			{ url: '/basic/department/findDepartmentTree', method: 'post', sign: 'dept_options' },
+			{ url: '/basic/systemRole/allExcludeMenu', method: 'get', sign: 'role_options' },
+      { url: '/basic/duty/findExcludeByDutyId', method: 'post', sign: 'duty_options' }
 		]
 		optionRequests.forEach(({ url, method, sign, success }) => Ajax({
 			url, method, sign, success,
@@ -85,6 +78,17 @@ function Page1(props) {
       }),
       onCancel:()=>{}
     })
+	}
+
+  function startAddUser(){
+		setDataConfig({ id: "" })
+		setModalV(true)
+	}
+
+  function startEditConfig(row){
+		let { id } = row
+		setDataConfig({ id })
+		setModalV(true)
 	}
 
   let { roleOptions } = props
@@ -151,7 +155,7 @@ function Page1(props) {
       align: 'center',
       key: 7,
       render: (text, record) => <Fragment>
-          <Button icon={ <EditOutlined /> } size="small">编辑</Button>
+          <Button icon={ <EditOutlined /> } size="small" onClick={ () => startEditConfig(record) }>编辑</Button>
           {
             record.available ?
               <Button icon={ <LockOutlined /> } type="danger" size="small" onClick={ () => swiftAvailable({ userId: record.id, userName: record.userName, valid: 0 }) }>禁用</Button> :
@@ -164,7 +168,7 @@ function Page1(props) {
   return <div className="page-wrap">
     <div className="page-title">
       <span>用户管理</span>
-      <Button icon={ <PlusOutlined /> } type="primary" size="small">新增用户</Button>
+      <Button icon={ <PlusOutlined /> } type="primary" size="small" onClick={ startAddUser }>新增用户</Button>
     </div>
     <div className="page-search">
       <Form form={ form } initialValues={{
@@ -192,7 +196,7 @@ function Page1(props) {
           </Col>
           <Col span={ 5 }>
             <FormItem label="所属公司" name="orgIdArr">
-              <Cascader options={ orgOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="请选择所属公司" />
+              <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="请选择所属公司" />
             </FormItem>
           </Col>
           <Col span={ 5 }>
@@ -236,13 +240,20 @@ function Page1(props) {
         pageSizeOptions: [15, 30 ,50]
       }} onChange={ ({ current, pageSize }) => handleChange(current, pageSize) } loading={ loading } rowKey={ record => record.id } />
     </div>
+
+    <UserConfigModal visible={ modalV } data={ dataForConfig } operateConfirm={ () => { setModalV(false); pullData() } } cancelConfirm={ () => setModalV(false) } />
   </div>
 }
 
 // lead stores in
 const mapStateToProps = state => ({
-  "listData": state.ListData[dataSign],
-  "roleOptions": state.detailData['role_options'],
+  "listData": state.ListData[dataSign] || {},
+  "roleOptions": state.detailData['role_options'] || [],
+  "deptOptions": (() => {
+		let { dept_options } = state.detailData
+		let children = dept_options.length ? dept_options[0]['children'] : []
+		return cleanNullChildren(children, 'children')
+	})()
 })
 
 // lead actions in

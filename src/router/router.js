@@ -9,12 +9,13 @@ import { copyAndRename } from '@/utils/deepCopy';
 import App from '@/views/App';
 import Login from '@/views/common/Login';
 import HomeRouter from '@/router/HomeRouter';
+import PermissionRouter from '@/components/PermissionRouter'
 
 const RootRouter = () => <Router history={ browserHistory }>
   <App>
     <Switch>
       <Route path="/login" component={ Login } />
-      <Route path="/home" component={ HomeRouter } />
+      <PermissionRouter path="/home" component={ HomeRouter } />
       {/* 匹配其它 */}
       <Redirect to={ '/home' } />
     </Switch>

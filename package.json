@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.16.13",
+    "antd-dayjs-webpack-plugin": "^1.0.6",
     "browser-cookies": "^1.2.0",
     "http-proxy-middleware": "^2.0.1",
     "isomorphic-fetch": "^2.2.1",
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "start": "node react-scripts/scripts/start.js dev",
-    "build": "node react-scripts/scripts/build.js build",
+    "build": "set GENERATE_SOURCEMAP=false&& node react-scripts/scripts/build.js build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

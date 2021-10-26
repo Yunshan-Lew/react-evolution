@@ -28,7 +28,7 @@ function UserIndex(props) {
     document.title = '用户管理'
     getOptions()
     resetTable()
-  }, [])
+  }, []) // eslint-disable-line
 
   function getOptions(){
 		let optionRequests = [

@@ -23,7 +23,7 @@ function UserConfigModal(props) {
       let { id } = data
       if( id ) getOriginData(id)
     }
-  }, [ visible ])
+  }, [ visible ]) // eslint-disable-line
 
   function getOriginData(userId){
 		Ajax({
@@ -41,8 +41,6 @@ function UserConfigModal(props) {
             [ { deptId: [], dutyId: "" } ],
           "roleIds": Array.isArray(roles) ? roles.map(item => item.id) : []
         })
-
-        console.log(form.getFieldsValue())
       },
 			fail: err => console.error(err)
 		})
@@ -122,7 +120,7 @@ function UserConfigModal(props) {
     footer={[
       <Button type="primary" key="confirm" loading={ loading } onClick={ submitHandle }>确认</Button>,
       <Button key="cancel" onClick={ props.cancelConfirm }>取消</Button>
-    ]}  onOk={ submitHandle } onCancel={ props.cancelConfirm }
+    ]} onOk={ submitHandle } onCancel={ props.cancelConfirm }
   >
     <Form { ...formItemLayout } form={ form } initialValues={{
       userName: "",
@@ -158,12 +156,12 @@ function UserConfigModal(props) {
             fields.map((field, index) => (
               <Row gutter={ 10 } key={ field.key }>
                 <Col span={ 13 }>
-                  <FormItem label="任职信息" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} name={[ field.name, "deptId"]} rules={ rules.deptId }>
+                  <FormItem label={ index === 0 ? '任职信息' : ' ' } colon={ index === 0 } labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} name={[ field.name, "deptId"]} rules={ rules.deptId }>
                     <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="所属公司" allowClear />
                   </FormItem>
                 </Col>
                 <Col span={ 1 }>
-                  <span style={{ lineHeight: '32px', marginLeft: '-2px' }}>任</span>
+                  <span style={{ lineHeight: '32px', marginLeft: '-3px' }}>任</span>
                 </Col>
                 <Col span={ 7 }>
                   <FormItem wrapperCol={{ span: 24 }} name={[ field.name, "dutyId"]} rules={ rules.dutyId }>
@@ -176,12 +174,12 @@ function UserConfigModal(props) {
                 </Col>
                 <Col span={ 3 } style={{ lineHeight: '32px' }}>
                   {
-                    index === fields.length - 1 ?
-                    <PlusCircleOutlined className="color-green font-18" style={{ marginRight: '5px' }} onClick={ () => add() } /> : null
-                  }
-                  {
                     fields.length > 1 ?
                     <MinusCircleOutlined className="color-red font-18" onClick={ () => remove(field.name) } /> : null
+                  }
+                  {
+                    index === fields.length - 1 && fields.length < 5 ?
+                    <PlusCircleOutlined className="color-green font-18" style={{ marginLeft: '5px' }} onClick={ () => add() } /> : null
                   }
                 </Col>
               </Row>

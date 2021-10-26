@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -6,7 +6,6 @@ import actions from '@/store/actions';
 import { Layout, Menu, Button } from 'antd';
 import { DesktopOutlined } from '@ant-design/icons';
 import { authRender } from '@/utils/authRender';
-import cookies from 'browser-cookies';
 import { copyAndRename } from '@/utils/deepCopy';
 
 const { Header, Sider, Content } = Layout;
@@ -16,11 +15,6 @@ function CommonLayout(props) {
   const { selfAuth } = props
   const history = useHistory()
   let location = useLocation()
-
-  useEffect(() => {
-    let logState = cookies.get('tx_logState') === 'true' ? true : false
-    if( !logState ) history.push({ pathname: '/login' })
-  })
 
   let current = useMemo(() => {
     let { pathname } = location

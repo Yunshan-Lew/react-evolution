@@ -27,7 +27,7 @@ function Login(props){
   useEffect(() => {
     document.title = '登陆'
     reloadAccount()
-    let logState = cookies.get('tx_logState') === 'true' ? true : false
+    let logState = cookies.get('tx_logState') === 'true'
     if( logState ) window.location.href = '/home/main'
   })
 

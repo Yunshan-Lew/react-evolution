@@ -3,22 +3,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
 import { Modal, Form, Input, Select, Cascader, message, Row, Col, Button } from 'antd';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { cleanNullChildren } from '@/utils/cleanNullChildren';
 
 const FormItem = Form.Item;
+const FormList = Form.List;
 const Option = Select.Option;
+const Fragment = React.Fragment;
 
 function UserConfigModal(props) {
   let { visible, data, deptOptions, dutyOptions, roleOptions } = props
   let { Ajax } = props.actions
   let [ loading, setLoading ] = useState(false)
-  let [ deptDuties, setDeptDuties ] = useState(['item'])
   const [ form ] = Form.useForm()
 
   useEffect(() => {
     if( visible ){
       form.resetFields()
-      setDeptDuties(['item'])
       let { id } = data
       if( id ) getOriginData(id)
     }
@@ -32,19 +33,14 @@ function UserConfigModal(props) {
 				let data = res.data || {}
 				let { userName, mobile, deptDutyInfos, roles } = data
 				let { deptOptions } = props
-        setDeptDuties(deptDutyInfos.map(item => 'item'))
         form.setFieldsValue({
           userName,
           mobile,
+          "deptDutyInfos": ( Array.isArray(deptDutyInfos) && deptDutyInfos.length ) ?
+            deptDutyInfos.map(({ deptId, dutyId }) => ({ "deptId": findFullId(deptId, deptOptions), dutyId })) :
+            [ { deptId: [], dutyId: "" } ],
           "roleIds": Array.isArray(roles) ? roles.map(item => item.id) : []
         })
-				Array.isArray(deptDutyInfos) && deptDutyInfos.length ?
-        deptDutyInfos.forEach((item, index) => form.setFieldsValue({
-          [`deptId_${ index }`]: findFullId(item.deptId, deptOptions),
-          [`dutyId_${ index }`]: item.dutyId
-        }))
-        :
-        void(0)
 
         console.log(form.getFieldsValue())
       },
@@ -75,18 +71,17 @@ function UserConfigModal(props) {
     form.validateFields()
     .then(value => {
       let { id } = data
-      let { userName, mobile, accountName, password, roleIds } = value
-      let postData = { userName, mobile, "deptDuties": [], "roleIds": roleIds.join(',') }
+      let { userName, mobile, accountName, password, deptDutyInfos, roleIds } = value
+      let postData = {
+        userName, mobile,
+        "deptDuties": deptDutyInfos.map(({ deptId, dutyId }) => ({ "companyId": deptId[0], "deptId": deptId[deptId.length - 1], dutyId })),
+        "roleIds": roleIds.join(',')
+      }
       if( id ) postData['id'] = id
       if( !id ) {
         postData['accountName'] = accountName
         postData['password'] = password
       }
-      deptDuties.forEach((item, index) => {
-        let dept = value[`deptId_${index}`]
-        let dutyId = value[`dutyId_${index}`]
-        postData.deptDuties.push({ "companyId": dept[0], "deptId": dept[dept.length - 1], dutyId })
-      })
 
       setLoading(true)
       Ajax({
@@ -123,7 +118,7 @@ function UserConfigModal(props) {
     wrapperCol: { span: 18 }
   }
 
-  return <Modal visible={ visible } title={ `${ !!data.id ? '编辑' : '新增' }用户` } width={ 450 }
+  return <Modal visible={ visible } title={ `${ !!data.id ? '编辑' : '新增' }用户` } width={ 500 }
     footer={[
       <Button type="primary" key="confirm" loading={ loading } onClick={ submitHandle }>确认</Button>,
       <Button key="cancel" onClick={ props.cancelConfirm }>取消</Button>
@@ -134,8 +129,7 @@ function UserConfigModal(props) {
 			mobile: "",
 			accountName: "",
 			password: "",
-			deptId_0: [],
-      dutyId_0: "",
+			deptDutyInfos: [{ deptId: [], dutyId: "" }],
 			roleIds: []
     }}>
       <FormItem label="用户姓名" name="userName" rules={ rules.userName }>
@@ -156,28 +150,46 @@ function UserConfigModal(props) {
           <Input.Password placeholder="请输入登录密码" maxLength={ 16 } />
         </FormItem>
       }
+      <FormList name="deptDutyInfos">
       {
-        deptDuties.map((item, index) => <Row gutter={ 10 } key={ index }>
-            <Col span={ 14 }>
-              <FormItem label="任职信息" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} name={ `deptId_${ index }` } rules={ rules.deptId }>
-                <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="所属公司" allowClear />
-              </FormItem>
-            </Col>
-            <Col span={ 1 }>
-              <span style={{ lineHeight: '32px' }}>任</span>
-            </Col>
-            <Col span={ 9 }>
-              <FormItem style={{ width: '128px' }} wrapperCol={{ span: 24 }} name={ `dutyId_${ index }` } rules={ rules.dutyId }>
-                <Select allowClear showSearch placeholder="工作职务">
+        (fields, { add, remove }, { errors }) =>
+        <Fragment>
+          {
+            fields.map((field, index) => (
+              <Row gutter={ 10 } key={ field.key }>
+                <Col span={ 13 }>
+                  <FormItem label="任职信息" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} name={[ field.name, "deptId"]} rules={ rules.deptId }>
+                    <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="所属公司" allowClear />
+                  </FormItem>
+                </Col>
+                <Col span={ 1 }>
+                  <span style={{ lineHeight: '32px', marginLeft: '-2px' }}>任</span>
+                </Col>
+                <Col span={ 7 }>
+                  <FormItem wrapperCol={{ span: 24 }} name={[ field.name, "dutyId"]} rules={ rules.dutyId }>
+                    <Select allowClear showSearch placeholder="工作职务">
+                      {
+                        dutyOptions.map(option => <Option key={ option.id } value={ option.id }>{ option.name }</Option>)
+                      }
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span={ 3 } style={{ lineHeight: '32px' }}>
                   {
-                    dutyOptions.map(option => <Option key={ option.id } value={ option.id }>{ option.name }</Option>)
+                    index === fields.length - 1 ?
+                    <PlusCircleOutlined className="color-green font-18" style={{ marginRight: '5px' }} onClick={ () => add() } /> : null
                   }
-                </Select>
-              </FormItem>
-            </Col>
-          </Row>
-        )
+                  {
+                    fields.length > 1 ?
+                    <MinusCircleOutlined className="color-red font-18" onClick={ () => remove(field.name) } /> : null
+                  }
+                </Col>
+              </Row>
+            ))
+          }
+        </Fragment>
       }
+      </FormList>
       <FormItem label="权限角色" name="roleIds" rules={ rules.roleIds }>
         <Select mode="multiple" allowClear placeholder="请选择权限角色">
           {

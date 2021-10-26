@@ -43,8 +43,8 @@ function CommonLayout(props) {
           <Menu selectedKeys={[current]} defaultOpenKeys={['home']} mode="inline" theme="dark">
             <SubMenu key="home" icon={<DesktopOutlined />} title="落地页">
               {
-                authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/page1">
-                  <Link to="/home/page1">用户管理</Link>
+                authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/user">
+                  <Link to="/home/user">用户管理</Link>
                 </Menu.Item> : null
               }
               {

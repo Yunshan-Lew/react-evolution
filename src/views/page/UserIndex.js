@@ -14,7 +14,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const dataSign = 'system_user';
 
-function Page1(props) {
+function UserIndex(props) {
   let [ loading, setLoading ] = useState(false)
   let [ modalV, setModalV ] = useState(false)
   let [ dataForConfig, setDataConfig ] = useState({})
@@ -138,8 +138,8 @@ function Page1(props) {
       key: 5,
       render: (text, record) => record.deptDutyInfos.map((item, index) => {
         return item.organName !== item.deptName ?
-          <span key={ index }>{ item.organName }-{ item.deptName }-{ item.dutyName }</span> :
-					<span key={ index }>{ item.deptName }-{ item.dutyName }</span>
+          <span key={ index }>{ item.organName }-{ item.deptName }-{ item.dutyName }{ index === record.deptDutyInfos.length - 1 ? '' : ' / ' }</span> :
+					<span key={ index }>{ item.deptName }-{ item.dutyName }{ index === record.deptDutyInfos.length - 1 ? '' : ' / ' }</span>
       })
     },
     {
@@ -259,4 +259,4 @@ const mapStateToProps = state => ({
 // lead actions in
 const mapDispatchToProps = dispatch => ({ "actions": bindActionCreators(actions, dispatch) })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page1)
+export default connect(mapStateToProps, mapDispatchToProps)(UserIndex)

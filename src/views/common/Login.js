@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '@/store/actions';
 import { Layout, Form, Input, Button, Checkbox, message } from 'antd';
@@ -29,7 +29,7 @@ function Login(props){
     reloadAccount()
     let logState = cookies.get('tx_logState') === 'true'
     if( logState ) window.location.href = '/home/main'
-  })
+  }, []) // eslint-disable-line
 
   const loginSubmit = () => {
     form.validateFields()

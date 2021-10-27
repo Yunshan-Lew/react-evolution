@@ -1,19 +1,19 @@
-import { useMemo } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import { Layout, Menu, Button } from 'antd';
+import { Layout, Menu } from 'antd';
 import { DesktopOutlined } from '@ant-design/icons';
 import { authRender } from '@/utils/authRender';
 import { copyAndRename } from '@/utils/deepCopy';
+import TopDrop from '@/views/layout/TopDrop';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 function CommonLayout(props) {
   const { selfAuth } = props
-  const history = useHistory()
   let location = useLocation()
 
   let current = useMemo(() => {
@@ -21,16 +21,15 @@ function CommonLayout(props) {
 		return pathname
 	}, [location])
 
-  const userExit = () => {
-    let { loginOut } = props.actions
-    loginOut()
-    history.push({ pathname: '/login' })
-  }
+  useEffect(() => {
+    let { AjaxRelogin } = props.actions
+    AjaxRelogin()
+  }, []) // eslint-disable-line
 
   return (
     <Layout>
       <Header className="tx-layout-header bg-fff">
-        <Button size="small" className="pull-right" style={{ marginTop: '12px' }}onClick={ userExit }>登出</Button>
+        <TopDrop className="pull-right" style={{ marginTop: '12px' }} />
       </Header>
       <Layout className="tx-layout-container">
         <Sider className="tx-layout-sider" width={ 180 } collapsible collapsedWidth={ 60 }>
@@ -43,7 +42,7 @@ function CommonLayout(props) {
               }
               {
                 authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/page2">
-                  <Link to="/home/page2">页面2</Link>
+                  <Link to="/home/page2">登录信息</Link>
                 </Menu.Item> : null
               }
             </SubMenu>

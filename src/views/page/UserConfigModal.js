@@ -15,11 +15,11 @@ function UserConfigModal(props) {
   let { visible, data, deptOptions, dutyOptions, roleOptions } = props
   let { Ajax } = props.actions
   let [ loading, setLoading ] = useState(false)
-  const [ form ] = Form.useForm()
+  const [ infoForm ] = Form.useForm()
 
   useEffect(() => {
     if( visible ){
-      form.resetFields()
+      infoForm.resetFields()
       let { id } = data
       if( id ) getOriginData(id)
     }
@@ -33,7 +33,7 @@ function UserConfigModal(props) {
 				let data = res.data || {}
 				let { userName, mobile, deptDutyInfos, roles } = data
 				let { deptOptions } = props
-        form.setFieldsValue({
+        infoForm.setFieldsValue({
           userName,
           mobile,
           "deptDutyInfos": ( Array.isArray(deptDutyInfos) && deptDutyInfos.length ) ?
@@ -66,7 +66,7 @@ function UserConfigModal(props) {
 	}
 
   function submitHandle(){
-    form.validateFields()
+    infoForm.validateFields()
     .then(value => {
       let { id } = data
       let { userName, mobile, accountName, password, deptDutyInfos, roleIds } = value
@@ -116,13 +116,13 @@ function UserConfigModal(props) {
     wrapperCol: { span: 18 }
   }
 
-  return <Modal visible={ visible } title={ `${ !!data.id ? '编辑' : '新增' }用户` } width={ 500 }
+  return <Modal visible={ visible } title={ `${ !!data.id ? '编辑' : '新增' }用户` } width={ 500 } maskClosable={ false }
     footer={[
       <Button type="primary" key="confirm" loading={ loading } onClick={ submitHandle }>确认</Button>,
       <Button key="cancel" onClick={ props.cancelConfirm }>取消</Button>
     ]} onOk={ submitHandle } onCancel={ props.cancelConfirm }
   >
-    <Form { ...formItemLayout } form={ form } initialValues={{
+    <Form { ...formItemLayout } form={ infoForm } initialValues={{
       userName: "",
 			mobile: "",
 			accountName: "",

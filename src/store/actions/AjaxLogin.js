@@ -3,6 +3,7 @@ import actions from '@/store/actions';
 import configs from '@/config';
 import { toQueryString } from '@/utils/toQueryString';
 import { handleResponse } from '@/utils/handleResponse';
+import cookies from 'browser-cookies';
 
 const SUCCESS = configs.status.success
 
@@ -35,14 +36,13 @@ function AjaxLogin(param){
 	}
 }
 
-function AjaxRelogin(param){
+function AjaxRelogin(param = {}){
 	return function (dispatch, getState) {
-		const { data, success, fail } = param
+		const { success, fail } = param
 
 		return fetch(`${ configs.THE_HOST }/auth/getCurrentUser`, {
-			method: 'POST',
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: toQueryString(data),
+			method: 'GET',
+			headers: { "Content-Type": "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
 			timeout: 20000
 		})
 		.then(handleResponse)

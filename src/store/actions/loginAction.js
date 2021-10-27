@@ -6,7 +6,7 @@ const loginIn = (data) => {
 		expires: 7,
 		path: '/'
 	})
-	cookies.set('tx_token', token, {
+	token && cookies.set('tx_token', token, {
 		expires: 7,
 		path: '/'
 	})

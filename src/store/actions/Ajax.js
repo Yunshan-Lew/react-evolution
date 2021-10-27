@@ -46,4 +46,43 @@ function Ajax(param){
 	}
 }
 
-export default Ajax
+function AjaxFile(param){
+	return function (dispatch, getState) {
+		const { url, data, sign, timeout, success, fail } = param
+
+		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }`, {
+			method: 'POST',
+			headers: { "Authorization": cookies.get('tx_token') || '' },
+			body: data,
+			timeout: timeout || 20000
+		})
+		.then(handleResponse)
+		.then(res => {
+			let { code, data } = res
+			if( SUCCESS.includes(code) ){
+				if( sign && typeof data !== 'undefined' && data !== null ) {
+					dispatch(actions['pushDetailData'](sign, data))
+				}
+				if (typeof success === 'function') {
+					success(res)
+				}
+			}
+			else if( code && !SUCCESS.includes(code) && typeof fail === 'function' ){
+				fail(res)
+			}
+		})
+		.catch(error => {
+			let code = error.code || null
+      let data = { message: JSON.stringify(error, Object.getOwnPropertyNames(error), 2) }
+      if ( code && code === 401 ) {
+				dispatch(actions['loginOut']())
+				window.location.href = '/login'
+      }
+      else {
+        typeof fail === 'function' ? fail(data) : void(0)
+      }
+		})
+	}
+}
+
+export { Ajax, AjaxFile }

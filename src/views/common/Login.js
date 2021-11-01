@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '@/store/actions';
@@ -10,7 +9,6 @@ import cookies from 'browser-cookies';
 
 function Login(props){
   const [ form ] = Form.useForm()
-  const history = useHistory()
 
   const rules = {
     username: [{ required: true, message: '该项必填' }],
@@ -50,7 +48,7 @@ function Login(props){
 				 	}
 					// 登录成功
 					message.success('登录成功', 1, () => {
-						history.push({ pathname: '/home/main' })
+						window.location.href = '/home/main'
 					})
         },
         fail: err => {

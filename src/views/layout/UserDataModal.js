@@ -72,7 +72,7 @@ function UserDataModal(props){
     wrapperCol: { span: 19 }
   }
 
-  return <Modal visible={ visible } title={ `${ userName }的资料` } width={ 600 } maskClosable={ false }
+  return <Modal visible={ visible } title={ `${ userName }的资料` } width={ 600 } maskClosable={ false } forceRender
     footer={[
       <Button type="primary" key="confirm" loading={ loading } onClick={ submitHandle }>确认</Button>,
       <Button key="cancel" onClick={ props.cancelConfirm }>取消</Button>

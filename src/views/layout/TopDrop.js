@@ -4,8 +4,9 @@ import { Dropdown, Menu, Button } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import { DownOutlined, UserOutlined, BulbOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { DownOutlined, UserOutlined, BranchesOutlined, BulbOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import UserDataModal from '@/views/layout/UserDataModal';
+import Mutator from '@/views/layout/Mutator';
 
 const MenuItem = Menu.Item;
 const Fragment = React.Fragment;
@@ -15,6 +16,7 @@ function TopDrop(props){
   let { userName } = props.userInfo
   let { AjaxRelogin } = props.actions
   let [ modalV, setModalV ] = useState(false)
+  let [ modalV2, setModalV2 ] = useState(false)
   let [ brightness, setBrightness ] = useState('1')
   const history = useHistory()
 
@@ -40,6 +42,11 @@ function TopDrop(props){
         <UserOutlined /> 个人资料
       </Button>
     </MenuItem>
+    <MenuItem key="mutator">
+      <Button type="text" size="small" onClick={ () => setModalV2(true) }>
+        <BranchesOutlined /> 修改器
+      </Button>
+    </MenuItem>
     <MenuItem key="light">
       <Button type="text" size="small" onClick={ () => setBrightness(brightness === '1' ? '.8' : '1') }>
         <BulbOutlined /> { brightness === '1' ? '低' : '高' }亮度
@@ -58,6 +65,8 @@ function TopDrop(props){
     </Dropdown>
 
     <UserDataModal visible={ modalV } operateConfirm={ () => { setModalV(false); AjaxRelogin() } } cancelConfirm={ () => setModalV(false) } />
+
+    <Mutator visible={ modalV2 } operateConfirm={ () => setModalV2(false) } cancelConfirm={ () => setModalV2(false) } />
   </Fragment>
 }
 

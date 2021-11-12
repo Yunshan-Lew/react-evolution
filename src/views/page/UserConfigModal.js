@@ -165,7 +165,7 @@ function UserConfigModal(props) {
                 </Col>
                 <Col span={ 7 }>
                   <FormItem wrapperCol={{ span: 24 }} name={[ field.name, "dutyId"]} rules={ rules.dutyId }>
-                    <Select allowClear showSearch placeholder="工作职务">
+                    <Select allowClear showSearch optionFilterProp="children" placeholder="工作职务">
                       {
                         dutyOptions.map(option => <Option key={ option.id } value={ option.id }>{ option.name }</Option>)
                       }

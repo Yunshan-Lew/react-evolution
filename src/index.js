@@ -6,6 +6,7 @@ import { ConfigProvider, message } from 'antd';
 import moment from 'moment';
 import zhCN from 'antd/lib/locale/zh_CN';
 import 'moment/locale/zh-cn';
+import '@/style/reset.css';
 import '@/style/style.less';
 import reportWebVitals from './reportWebVitals';
 

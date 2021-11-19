@@ -196,7 +196,7 @@ function UserIndex(props) {
           </Col>
           <Col span={ 5 }>
             <FormItem label="所属公司" name="orgIdArr">
-              <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="请选择所属公司" />
+              <Cascader options={ deptOptions } fieldNames={{ label: 'name', value: 'id', children: 'children' }} placeholder="请选择所属公司" changeOnSelect />
             </FormItem>
           </Col>
           <Col span={ 5 }>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-function useTableHeight(){
+function useTableHeight(v = 390){
   let [ tableHeight, setTableHeight ] = useState(550)
 
   useEffect(() => {
     let { clientHeight } = document.body
-    setTableHeight(clientHeight - 390)
-  }, [])
+    setTableHeight(clientHeight - v)
+  }, [ v ])
 
   return [ tableHeight ]
 }

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import config from '@/config';
 
 function useQueryTable(form, queryFn){
-  let [force, forceUpdate ] = useState(false)
+  let [ force, forceUpdate ] = useState(false)
   let [ pageIndex, setPageIndex ] = useState(1)
   let [ pageSize, setPageSize ] = useState(config.pageSize)
 
-  useEffect(queryFn, [ force ])
+  useEffect(queryFn, [ force ]) // eslint-disable-line
 
   function handleChange(i, s){
 		setPageIndex(i)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Dropdown, Menu, Button } from 'antd';
+import { Dropdown, Menu, Button, Avatar } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
@@ -12,8 +12,9 @@ const MenuItem = Menu.Item;
 const Fragment = React.Fragment;
 
 function TopDrop(props){
-  let { className, style } = props
-  let { userName } = props.userInfo
+  let { className, style, userInfo } = props
+  let headIcon = userInfo.headIcon || 'https://joeschmoe.io/api/v1/random'
+  let userName = userInfo.userName || ''
   let { AjaxRelogin } = props.actions
   let [ modalV, setModalV ] = useState(false)
   let [ modalV2, setModalV2 ] = useState(false)
@@ -61,7 +62,11 @@ function TopDrop(props){
 
   return <Fragment>
     <Dropdown overlay={ menu } placement="bottomRight" trigger="click">
-      <Button className={ className } style={ style } size="small">{ userName } <DownOutlined /></Button>
+      <Button type="text" className={ className } style={ style } size="small">
+        <Avatar size="small" src={ headIcon } style={{ marginRight: '6px', marginTop: '-2px' }} />
+        { userName }
+        <DownOutlined />
+      </Button>
     </Dropdown>
 
     <UserDataModal visible={ modalV } operateConfirm={ () => { setModalV(false); AjaxRelogin() } } cancelConfirm={ () => setModalV(false) } />

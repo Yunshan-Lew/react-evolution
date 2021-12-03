@@ -202,12 +202,12 @@ function UserConfigModal(props) {
 // lead stores in
 const mapStateToProps = state => ({
   "deptOptions": (() => {
-		let { dept_options } = state.detailData
+		let { dept_options } = state.systemData
 		let children = dept_options.length ? dept_options[0]['children'] : []
 		return cleanNullChildren(children, 'children')
 	})(),
-  "dutyOptions": state.detailData['duty_options'] || [],
-  "roleOptions": state.detailData['role_options'] || []
+  "dutyOptions": state.systemData['duty_options'] || [],
+  "roleOptions": state.systemData['role_options'] || []
 })
 
 // lead actions in

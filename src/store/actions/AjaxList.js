@@ -13,7 +13,10 @@ function AjaxList(param){
 
 		return fetch(`${ configs.THE_HOST }${ /^\//.test(url) ? '' : '/' }${ url }${ (method || 'GET').toUpperCase() === 'GET' ? '?' + toQueryString(data) : '' }`, {
 			method,
-			headers: { "Content-Type": contentType || "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
+			headers: {
+				"Content-Type": contentType || "application/x-www-form-urlencoded",
+				"Authorization": cookies.get('tx_token') || ''
+			},
 			body: (method || 'GET').toUpperCase() === 'GET' ? null : contentType ? JSON.stringify(data) : toQueryString(data),
 			timeout: 20000
 		})
@@ -44,4 +47,4 @@ function AjaxList(param){
 	}
 }
 
-export default AjaxList
+export { AjaxList }

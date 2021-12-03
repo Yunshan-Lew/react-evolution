@@ -13,7 +13,9 @@ function AjaxLogin(param){
 
 		return fetch(`${ configs.THE_HOST }/auth/login`, {
 			method: 'POST',
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
 			body: toQueryString(data),
 			timeout: 20000
 		})
@@ -42,7 +44,10 @@ function AjaxRelogin(param = {}){
 
 		return fetch(`${ configs.THE_HOST }/auth/getCurrentUser`, {
 			method: 'GET',
-			headers: { "Content-Type": "application/x-www-form-urlencoded", "Authorization": cookies.get('tx_token') || '' },
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"Authorization": cookies.get('tx_token') || ''
+			},
 			timeout: 20000
 		})
 		.then(handleResponse)

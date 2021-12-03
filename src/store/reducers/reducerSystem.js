@@ -1,19 +1,25 @@
 const detailInfo = {
-	self_auth: {},
-	relation: { value: 'default value' }
+	dept_options: [],
+	duty_options: [],
+	role_options: []
 }
 
 const todos = (state = detailInfo, { type, data, sign }) => {
 	switch (type) {
-		case 'self_auth':
+		case 'dept_options':
 			return {
 				...state,
-				self_auth: data
+				dept_options: data
 			}
-		case 'relation':
+		case 'duty_options':
 			return {
 				...state,
-				relation: data
+				duty_options: data
+			}
+		case 'role_options':
+			return {
+				...state,
+				role_options: data
 			}
 		case 'clean':
 			return {

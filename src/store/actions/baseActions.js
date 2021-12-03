@@ -12,4 +12,13 @@ const pushListData = (sign, data) => {
 	}
 }
 
-export { pushDetailData, pushListData }
+const pushSystemData = (sign, data) => {
+	return {
+		type: sign,
+		data: data
+	}
+}
+
+const cleanPrevData = sign => ({ type: 'clean', sign })
+
+export { pushDetailData, pushListData, pushSystemData, cleanPrevData }

@@ -19,7 +19,7 @@ function UserIndex(props) {
   let [ modalV, setModalV ] = useState(false)
   let [ dataForConfig, setDataConfig ] = useState({})
   let { deptOptions } = props
-  let { Ajax, AjaxList } = props.actions
+  let { Ajax, AjaxList, AjaxSystem } = props.actions
   const [ form ] = Form.useForm()
   let [ { pageIndex, pageSize }, { handleChange, handleSearch, resetTable } ] = useQueryTable(form, pullData)
   let [ tableHeight ] = useTableHeight()
@@ -36,7 +36,7 @@ function UserIndex(props) {
 			{ url: '/basic/systemRole/allExcludeMenu', method: 'get', sign: 'role_options' },
       { url: '/basic/duty/findExcludeByDutyId', method: 'post', sign: 'duty_options' }
 		]
-		optionRequests.forEach(({ url, method, sign, success }) => Ajax({
+		optionRequests.forEach(({ url, method, sign, success }) => AjaxSystem({
 			url, method, sign, success,
 			fail: res => message.error(res.message)
 		}))
@@ -247,10 +247,10 @@ function UserIndex(props) {
 
 // lead stores in
 const mapStateToProps = state => ({
-  "listData": state.ListData[dataSign] || {},
-  "roleOptions": state.detailData['role_options'] || [],
+  "listData": state.listData[dataSign] || {},
+  "roleOptions": state.systemData['role_options'] || [],
   "deptOptions": (() => {
-		let { dept_options } = state.detailData
+		let { dept_options } = state.systemData
 		let children = dept_options.length ? dept_options[0]['children'] : []
 		return cleanNullChildren(children, 'children')
 	})()

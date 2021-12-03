@@ -33,20 +33,23 @@ function CommonLayout(props) {
       </Header>
       <Layout className="tx-layout-container">
         <Sider className="tx-layout-sider" width={ 180 } collapsible collapsedWidth={ 60 }>
-          <Menu selectedKeys={[current]} defaultOpenKeys={['home']} mode="inline" theme="dark">
-            <SubMenu key="home" icon={<DesktopOutlined />} title="落地页">
-              {
-                authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/user">
-                  <Link to="/home/user">用户管理</Link>
-                </Menu.Item> : null
-              }
-              {
-                authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/page2">
-                  <Link to="/home/page2">登录信息</Link>
-                </Menu.Item> : null
-              }
-            </SubMenu>
-          </Menu>
+          {
+            authRender(['system:user:index', 'system:department:index'], selfAuth) ?
+            <Menu selectedKeys={[current]} defaultOpenKeys={['home']} mode="inline" theme="dark">
+              <SubMenu key="home" icon={<DesktopOutlined />} title="落地页">
+                {
+                  authRender('system:user:index', selfAuth) ? <Menu.Item key="/home/user">
+                    <Link to="/home/user">用户管理</Link>
+                  </Menu.Item> : null
+                }
+                {
+                  authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/page2">
+                    <Link to="/home/page2">登录信息</Link>
+                  </Menu.Item> : null
+                }
+              </SubMenu>
+            </Menu> : null
+          }
         </Sider>
         <Content className="tx-layout-content">{ props.children }</Content>
       </Layout>

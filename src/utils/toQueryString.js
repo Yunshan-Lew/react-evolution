@@ -10,4 +10,13 @@ const toQueryString = function (obj) {
     }).join('&') : '';
 }
 
-export { toQueryString }
+const parseQueryString = function(){
+  let query = {};
+	window.location.search.replace(/^\?/, '').split('&').forEach(item => {
+		let keyVal = item.split('=');
+		if( keyVal.length === 2 ) query[keyVal[0]] = keyVal[1];
+	});
+  return query;
+}
+
+export { toQueryString, parseQueryString }

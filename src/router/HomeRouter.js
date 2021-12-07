@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import actions from '@/store/actions';
 import CommonLayout from '@/views/layout/CommonLayout';
 import UserIndex from '@/views/page/UserIndex';
-import Page2 from '@/views/page/Page2';
+import UserInfo from '@/views/page/UserInfo';
+import Wait from '@/views/page/message/Wait';
 import PageMain from '@/views/page/PageMain';
 import PermissionRouter from '@/components/PermissionRouter'
 
@@ -12,7 +13,8 @@ const HomeRouter = props => {
   return <CommonLayout>
     <Switch>
       <PermissionRouter path="/home/user" authSign="system:user:index" component={ UserIndex } />
-      <PermissionRouter path="/home/page2" authSign="system:department:index" component={ Page2 } />
+      <PermissionRouter path="/home/userinfo" authSign="system:department:index" component={ UserInfo } />
+      <PermissionRouter path="/home/wait" authSign="work:board:wait" component={ Wait } />
       <PermissionRouter path="/home/main" component={ PageMain } />
       <Redirect to={ '/home/main' } />
     </Switch>

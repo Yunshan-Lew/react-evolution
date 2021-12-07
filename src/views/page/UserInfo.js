@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
 
-function Page2(props) {
+function UserInfo(props) {
   useEffect(() => {
     document.title = '登录信息'
   })
@@ -63,4 +63,4 @@ const mapStateToProps = state => ({
 	loginInfo: state.loginInfo
 })
 
-export default connect(mapStateToProps)(Page2)
+export default connect(mapStateToProps)(UserInfo)

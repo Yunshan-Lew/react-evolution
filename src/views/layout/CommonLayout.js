@@ -43,8 +43,13 @@ function CommonLayout(props) {
                   </Menu.Item> : null
                 }
                 {
-                  authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/page2">
-                    <Link to="/home/page2">登录信息</Link>
+                  authRender('system:department:index', selfAuth) ? <Menu.Item key="/home/userinfo">
+                    <Link to="/home/userinfo">登录信息</Link>
+                  </Menu.Item> : null
+                }
+                {
+                  authRender('work:board:wait', selfAuth) ? <Menu.Item key="/home/wait">
+                    <Link to="/home/wait">待办事项</Link>
                   </Menu.Item> : null
                 }
               </SubMenu>

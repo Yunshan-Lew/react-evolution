@@ -370,3 +370,85 @@ code {
 	border-radius: 4px;
 	background: #FAFAFA;
 }
+
+.page-content {
+  position: absolute;
+ 	left: 15px;
+ 	right: 15px;
+ 	top: 52px;
+ 	bottom: 15px;
+  &.bg-fff {
+ 		border: 1px solid #e6e6e6;
+    overflow-y: auto;
+ 	}
+}
+
+.message-side {
+  width: 200px;
+  font-size: 14px;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  .side-item {
+    user-select: none;
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    font-size: 13px;
+    cursor: pointer;
+    overflow: hidden;
+    i {
+      color: #999;
+    }
+    &.low {
+      height: 44px;
+      line-height: 44px;
+      padding: 0 17px;
+    }
+    &:hover {
+      font-weight: bold;
+      margin-left: -6px;
+      transition: all .1s ease-out;
+    }
+  }
+  .ant-badge {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    .ant-badge-count {
+      box-shadow: none;
+    }
+  }
+}
+
+.message-content {
+  position: absolute;
+  left: 210px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+	padding: 30px;
+  overflow: auto;
+}
+
+.side-item-default {
+  color: #333;
+  border-right: 2px solid transparent;
+}
+
+.side-item-select {
+  color: #bf3726;
+  border-right: 2px solid #bf3726;
+  background-color: #ffddd9;
+}

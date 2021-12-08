@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Spin } from 'antd';
 import { authRender } from '@/utils/authRender';
 import { Permission } from '@/context/Permission';
-import Page403 from '@/views/page/Page403';
+import Page403 from '@/views/common/Page403';
 import cookies from 'browser-cookies';
 
 const PermissionRouter = function(props){

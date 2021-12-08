@@ -3,31 +3,26 @@ const defaultStore = {
 		count: 0,
 		results: []
 	},
-	TRAIN: {
-		count: 0,
-		results: []
-	},
-	BILLORDER: {
+	todo_list: {
 		count: 0,
 		results: []
 	}
 }
 
+function nullOrUndefined(v){
+	return typeof v === 'undefined' || v === null
+}
+
 const todos = (state = defaultStore, { type, data }) => {
 	if( type === 'system_user' ){
-		const count = Number(data.count || state['system_user'].count)
+		const count = nullOrUndefined(data.count) ? state['system_user'].count : Number(data.count)
 		const results = data.results || state['system_user'].results
 		return { ...state, system_user: { count, results } }
 	}
-	else if( type === 'TRAIN' ){
-		const count = Number(data.count || state['TRAIN'].count)
-		const results = data.results || state['TRAIN'].results
-		return { ...state, TRAIN: { count, results } }
-	}
-	else if( type === 'BILLORDER' ){
-		const count = Number(data.count || state['BILLORDER'].count)
-		const results = data.results || state['BILLORDER'].results
-		return { ...state, BILLORDER: { count, results } }
+	else if( type === 'todo_list' ){
+		const count = nullOrUndefined(data.count) ? state['todo_list'].count : Number(data.count)
+		const results = data.results || state['todo_list'].results
+		return { ...state, todo_list: { count, results } }
 	}
 	else {
 		return state

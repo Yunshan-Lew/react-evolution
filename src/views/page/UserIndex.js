@@ -51,7 +51,7 @@ function UserIndex(props) {
 		AjaxList({
 			url: '/basic/systemUser/userPage',
 			method: 'get',
-			sign: 'system_user',
+			sign: dataSign,
 			data: postData,
 			success: res => setLoading(false),
 			fail: res => {
@@ -237,7 +237,7 @@ function UserIndex(props) {
         pageSize: pageSize,
         total: listData.count,
         showTotal: total => `共${ total }条`,
-        pageSizeOptions: [15, 30 ,50]
+        pageSizeOptions: [15, 30, 50]
       }} onChange={ ({ current, pageSize }) => handleChange(current, pageSize) } loading={ loading } rowKey={ record => record.id } />
     </div>
 

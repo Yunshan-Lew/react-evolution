@@ -3,17 +3,21 @@ import { useHistory } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import { Badge } from 'antd';
+import { Badge, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { authRender } from '@/utils/authRender';
-import WaitAudit from '@/views/page/message/components/WaitAudit';
-import AuditRefuse from '@/views/page/message/components/AuditRefuse';
+import WaitAudit from '@/views/message/components/WaitAudit';
+import AuditRefuse from '@/views/message/components/AuditRefuse';
 import { copyAndRename } from '@/utils/deepCopy';
 import { parseQueryString } from '@/utils/toQueryString';
+
+const antIcon = <LoadingOutlined style={{ fontSize: 28 }} spin />;
 
 function Wait(props){
   let { Ajax } = props.actions
   let history = useHistory()
   let { location } = history
+  let [ loading, loadingUpdate ] = useState(false)
   let [ active, activeUpdate ] = useState('')
   let [ leftSides, leftSidesUpdate ] = useState([])
 
@@ -24,6 +28,7 @@ function Wait(props){
   }, [ location ])
 
   useEffect(() => {
+    document.title = '待办事项'
     activeUpdate(selectCurrent)
     getTypeAndNum()
   }, []) // eslint-disable-line
@@ -36,9 +41,11 @@ function Wait(props){
 
   // 待办类型与数量
 	function getTypeAndNum(){
+    loadingUpdate(true)
     Ajax({
       url: '/todo/todo/type/list/new',
       success: res => {
+        loadingUpdate(false)
         let data = res.data || []
         // 重命名字段
         let data2 = Array.isArray(data) ? data.map(({ name, count, type }) => ({
@@ -68,7 +75,10 @@ function Wait(props){
         }
         if( !selectCurrent && data3.length ) activeUpdate(data3[active]['code'])
       },
-      fail: err => console.error(err)
+      fail: err => {
+        loadingUpdate(false)
+        console.error(err)
+      }
     })
   }
 
@@ -89,6 +99,7 @@ function Wait(props){
     </div>
     <div className="page-content">
       <div className="message-side">
+        { loading ? <Spin className="spin-center" indicator={antIcon} /> : null }
         {
           leftSides.map((item, index) => {
             return authRender(item.authName, props.selfAuth) ?

@@ -67,11 +67,11 @@ function Login(props){
     >
       <div className="tx-surface-logo" style={{ backgroundImage: `url(${ logoSource })` }}></div>
       <Form.Item name="username" rules={ rules.username }>
-        <Input prefix={<UserOutlined />} placeholder="请输入用户名/手机号" />
+        <Input prefix={<UserOutlined />} placeholder="请输入用户名/手机号" onPressEnter={ loginSubmit } />
       </Form.Item>
 
       <Form.Item name="password" rules={ rules.password }>
-        <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" onKeyDown={ e => e.keyCode === 13 ? loginSubmit(e) : null } />
+        <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" onPressEnter={ loginSubmit } />
       </Form.Item>
 
       <Form.Item name="remember" valuePropName="checked">

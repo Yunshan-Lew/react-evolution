@@ -5,8 +5,8 @@ import actions from '@/store/actions';
 import CommonLayout from '@/views/layout/CommonLayout';
 import UserIndex from '@/views/page/UserIndex';
 import UserInfo from '@/views/page/UserInfo';
-import Wait from '@/views/page/message/Wait';
-import PageMain from '@/views/page/PageMain';
+import Wait from '@/views/message/Wait';
+import PageMain from '@/views/common/PageMain';
 import PermissionRouter from '@/components/PermissionRouter'
 
 const HomeRouter = props => {

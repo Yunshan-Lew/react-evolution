@@ -1,7 +1,8 @@
 const detailInfo = {
 	dept_options: [],
 	duty_options: [],
-	role_options: []
+	role_options: [],
+	process_nodes: []
 }
 
 const todos = (state = detailInfo, { type, data, sign }) => {
@@ -20,6 +21,11 @@ const todos = (state = detailInfo, { type, data, sign }) => {
 			return {
 				...state,
 				role_options: data
+			}
+		case 'process_nodes':
+			return {
+				...state,
+				process_nodes: data
 			}
 		case 'clean':
 			return {

@@ -1,45 +1,24 @@
-import { useState, useEffect } from 'react';
-import { Form, Radio, Input, Button, Table, message } from 'antd';
+import { useEffect } from 'react';
+import { Form, Radio, Input, Button, Table } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '@/store/actions';
-import { useQueryTable } from '@/hooks/useQueryTable';
+import { useWaitTable } from '@/hooks/useWaitTable';
 import { useTableHeight } from '@/hooks/useTableHeight';
 import { privateInfo } from '@/utils/privateInfo';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-const dataSign = 'todo_list';
 
 function WaitAudit(props){
-  let [ loading, setLoading ] = useState(false)
   const [ form ] = Form.useForm()
-  let [ { pageIndex, pageSize }, { handleChange, handleSearch, resetTable } ] = useQueryTable(form, pullData)
+  let [ { requesting, pageIndex, pageSize }, { handleChange, handleSearch, resetTable } ] = useWaitTable(form, props.type, props.actions)
   let [ tableHeight ] = useTableHeight(330)
-  const { AjaxList } = props.actions
 
   useEffect(() => {
     resetTable()
   }, []) // eslint-disable-line
-
-  function pullData(){
-    let postData = { ...form.getFieldsValue(), todoType: props.type, pageSize, pageIndex }
-
-    setLoading(true)
-		AjaxList({
-			url: '/todo/todo/list/new',
-			method: 'post',
-			data: postData,
-      sign: dataSign,
-      contentType: 'application/json',
-			success: res => setLoading(false),
-			fail: res => {
-				setLoading(false)
-				message.error(res.message)
-			}
-		})
-	}
 
   let { listData } = props
   const columns = [
@@ -131,7 +110,7 @@ function WaitAudit(props){
   return <div>
     <Form form={ form } layout="inline" className="marb-15"
       initialValues={{
-        status: -1,
+        status: 0,
         customer: '',
         operateUser: ''
       }}
@@ -157,13 +136,13 @@ function WaitAudit(props){
       total: listData.count,
       showTotal: total => `共${ total }条`,
       pageSizeOptions: [15, 30, 50]
-    }} onChange={ ({ current, pageSize }) => handleChange(current, pageSize) } loading={ loading } rowKey={ record => record.todoId } />
+    }} onChange={ ({ current, pageSize }) => handleChange(current, pageSize) } loading={ requesting } rowKey={ record => record.todoId } />
   </div>
 }
 
 // lead stores in
 const mapStateToProps = state => ({
-  "listData": state.listData[dataSign] || {}
+  "listData": state.listData['todo_list'] || {}
 })
 
 // lead actions in

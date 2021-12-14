@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Form, Radio, Input, Button, Table } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,12 +12,8 @@ const RadioButton = Radio.Button;
 
 function WaitAudit(props){
   const [ form ] = Form.useForm()
-  let [ { requesting, pageIndex, pageSize }, { handleChange, handleSearch, resetTable } ] = useWaitTable(form, props.type, props.actions)
+  let [ { requesting, pageIndex, pageSize }, { handleChange, handleSearch } ] = useWaitTable(form, props.type, props.actions)
   let [ tableHeight ] = useTableHeight(330)
-
-  useEffect(() => {
-    resetTable()
-  }, []) // eslint-disable-line
 
   let { listData } = props
   const columns = [
@@ -103,7 +98,7 @@ function WaitAudit(props){
       align: 'center',
       fixed: 'right',
 			key: 10,
-      render: (text, record) => <Button className="btn-cyan" size="small">审核</Button>
+      render: (text, record) => record.status === '0' ? <Button className="btn-cyan" size="small">审核</Button> : null
     }
   ]
 

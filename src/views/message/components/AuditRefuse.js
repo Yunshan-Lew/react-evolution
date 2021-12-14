@@ -15,12 +15,11 @@ const Option = Select.Option;
 
 function AuditRefuse(props){
   const [ form ] = Form.useForm()
-  let [ { requesting, pageIndex, pageSize }, { handleChange, handleSearch, resetTable, getProcessNodes } ] = useWaitTable(form, props.type, props.actions)
+  let [ { requesting, pageIndex, pageSize }, { handleChange, handleSearch, getProcessNodes } ] = useWaitTable(form, props.type, props.actions)
   let [ tableHeight ] = useTableHeight(330)
 
   useEffect(() => {
     getProcessNodes()
-    resetTable()
   }, []) // eslint-disable-line
 
   let { listData } = props
@@ -129,10 +128,58 @@ function AuditRefuse(props){
       align: 'center',
       fixed: 'right',
 			key: 13,
-      render: (text, record) => <Fragment>
-        <Button className="btn-cyan" size="small">保单变更</Button>
-        <Button size="small">移交</Button>
-      </Fragment>
+      render: (text, record) => record.status === '0' ?
+      <Fragment>
+        {
+          record.processState === 'VISIT_FAIL' || record.processState === 'RISK_REFUSE' || record.processState === 'BACK_VISIT' ?
+          <Button className="btn-cyan" size="small">调查变更</Button> : null
+        }
+        {
+          ( record.processNode === 'APPLY_WALKING_MONEY' && record.processState === 'PAYMENT_APPLY_FOR_TURN_DOWN' ) ||
+					( record.processNode === 'FINANCE_WALKING_MONEY' && record.processState === 'PAYMENT_APPLY_FOR_TURN_DOWN' ) ||
+					( record.processNode === 'APPLY_WALKING_MONEY' && record.processState === 'FINANCIAL_RETURN' ) ?
+          <Button className="btn-cyan" size="small">走款变更</Button> : null
+        }
+        {
+          record.processState === 'PROJECT_REFUSE' || record.processState === 'WAIT_BUSINESS_CONFIRM' || record.processState === 'BACK_PROJECT_START' ?
+          <Button className="btn-cyan" size="small">报单变更</Button> : null
+        }
+        {
+          record.processNode === 'WEIGHT_RECOVERY' && record.processState === 'WEIGHT_RECOVERY_TURN_DOWN' ?
+          <Button size="small">重权变更</Button> : null
+        }
+        {
+          record.processState === 'WAIT_RISK_AUDIT' || record.processState === 'PROCESS_RISK_REFUSE' ?
+          <Button size="small">风控审批</Button> : null
+        }
+        {
+          record.processState === 'WIND_CONTROL_REFUSE' ?
+          <Button size="small">申请复议</Button> : null
+        }
+        {
+          ( record.processNode === 'VOCATIONAL_WORK' && record.processState === 'MAKE_AN_ORDER_TURN_DOWN' ) ||
+					( record.processNode === 'BANK_LOAN' && record.processState === 'BANK_REQUEST_TURN_DOWN' ) ||
+					( record.processNode === 'VOCATIONAL_WORK' && record.processState === 'MAKE_AN_ORDER_BANK_RETURN' ) ||
+					( record.processNode === 'VOCATIONAL_WORK' && record.processState === 'MAKE_AN_ORDER_REFUSE' ) ?
+          <Button size="small">做单变更</Button> : null
+        }
+        {
+          record.processState === 'RONGZU_LOAN_REFUSE' ?
+          <Button size="small">融租放款变更</Button> : null
+        }
+        {
+          record.processState === 'EVALUATION_REFUSE' ?
+          <Button size="small">评估变更</Button> : null
+        }
+        {
+          record.processState === 'WIND_CONTROL_REFUSE' || record.processState === 'WIND_CONTROL_PREVIEW_REFUSE' || record.processState === 'WIND_CONTROL_RECHECK_REFUSE' ?
+          <Button size="small">终止订单</Button> : null
+        }
+        {
+          !['WIND_CONTROL_REFUSE', 'WIND_CONTROL_PREVIEW_REFUSE', 'WIND_CONTROL_RECHECK_REFUSE'].includes(record.processState) ?
+          <Button size="small">移交</Button> : null
+        }
+      </Fragment> : null
     }
   ]
   let { processNodeOptions } = props

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -16,22 +16,20 @@ const antIcon = <LoadingOutlined style={{ fontSize: 28 }} spin />;
 function Wait(props){
   let { Ajax } = props.actions
   let history = useHistory()
-  let { location } = history
   let [ loading, loadingUpdate ] = useState(false)
   let [ active, activeUpdate ] = useState('')
   let [ leftSides, leftSidesUpdate ] = useState([])
 
-  const selectCurrent = useMemo(() => {
-    let search = location.search || ''
-    let query = parseQueryString(search)
-    return query.select || ''
-  }, [ location ])
-
   useEffect(() => {
     document.title = '待办事项'
-    activeUpdate(selectCurrent)
+    activeUpdate(selectCurrent())
     getTypeAndNum()
   }, []) // eslint-disable-line
+
+  function selectCurrent(){
+    let query = parseQueryString()
+    return query.select || ''
+  }
 
   // 侧边切换
   function sideClick(item) {
@@ -73,7 +71,7 @@ function Wait(props){
           if( authRender(data3[active]['authName'], selfAuth) ) break
           active++
         }
-        if( !selectCurrent && data3.length ) activeUpdate(data3[active]['code'])
+        if( !selectCurrent() && data3.length ) activeUpdate(data3[active]['code'])
       },
       fail: err => {
         loadingUpdate(false)

@@ -1,35 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import config from '@/config';
 
 function useQueryTable(form, queryFn){
-  let [ force, forceUpdate ] = useState(false)
-  let [ pageIndex, setPageIndex ] = useState(1)
-  let [ pageSize, setPageSize ] = useState(config.pageSize)
-
-  useEffect(queryFn, [ force ]) // eslint-disable-line
+  let pagination = useRef({
+    pageIndex: 1,
+    pageSize: config.pageSize || 15
+  })
 
   function handleChange(i, s){
-		setPageIndex(i)
-		setPageSize(s)
-    forceUpdate(!force)
+		pagination.current.pageIndex = i
+		pagination.current.pageSize = s
+    let { current } = pagination
+    queryFn(current)
 	}
 
 	function handleSearch(val){
-    setPageIndex(val)
-    forceUpdate(!force)
+    pagination.current.pageIndex = val
+    let { current } = pagination
+    queryFn(current)
 	}
 
   function resetTable(){
     form.resetFields()
-		setPageIndex(1)
-    forceUpdate(!force)
+    pagination.current.pageIndex = 1
+    let { current } = pagination
+    queryFn(current)
 	}
 
    /* 组合暴露参数 */
    return [
     {
-      pageIndex,
-      pageSize
+      ...pagination.current
     },
     {
       handleChange,

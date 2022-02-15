@@ -42,9 +42,9 @@ function UserIndex(props) {
 		}))
 	}
 
-  function pullData(){
+  function pullData(P){
     let orgIdArr = form.getFieldsValue().orgIdArr || []
-    let postData = { ...form.getFieldsValue(), "departmentId": orgIdArr[orgIdArr.length - 1] || '', pageSize, pageIndex }
+    let postData = { ...form.getFieldsValue(), "departmentId": orgIdArr[orgIdArr.length - 1] || '', ...P }
     delete postData.orgIdArr
 
     setLoading(true)
